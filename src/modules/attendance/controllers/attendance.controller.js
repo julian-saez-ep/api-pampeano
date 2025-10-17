@@ -9,31 +9,6 @@ import path from 'path';
 import fs from 'fs';
 const tz = 'America/Argentina/Buenos_Aires';
 
-const saveLog = (data) => {
-  try {
-    const timestamp = new Date().toISOString();
-    const logEntry = { timestamp, ...data };
-    const logFile = path.join("hikvision_logs.json");
-    
-    let logs = [];
-    if (fs.existsSync(logFile)) {
-      const fileContent = fs.readFileSync(logFile, "utf8");
-      logs = JSON.parse(fileContent);
-    }
-    
-    logs.push(logEntry);
-    
-    // Limitar el tamaño del archivo de logs (últimos 1000 registros)
-    if (logs.length > 1000) {
-      logs = logs.slice(-1000);
-    }
-    
-    fs.writeFileSync(logFile, JSON.stringify(logs, null, 2));
-  } catch (error) {
-    console.error("Error guardando log:", error.message);
-  }
-}
-
 export const findOpenAttendanceByRequest = async (req, res) => {
   const employeeId = req.params.id;
     
